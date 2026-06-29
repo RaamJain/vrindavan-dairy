@@ -35,7 +35,9 @@ jobs:
             run_backend.py
 
       - name: Copy Backend
-        run: cp backend/vrindavan-dairy-backend frontend/backend/
+        run: |
+            mkdir -p frontend/backend
+            cp backend/vrindavan-dairy-backend frontend/backend/
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -89,7 +91,8 @@ jobs:
 
       - name: Copy Backend
         shell: pwsh
-        run: Copy-Item backend/vrindavan-dairy-backend.exe frontend/backend/
+        run: New-Item -ItemType Directory -Force frontend/backend | Out-Null
+            Copy-Item backend/vrindavan-dairy-backend.exe frontend/backend/
 
       - name: Setup Node
         uses: actions/setup-node@v4

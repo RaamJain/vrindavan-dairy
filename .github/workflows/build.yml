@@ -1,0 +1,111 @@
+name: Build Desktop Apps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: pip install poetry nuitka
+
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: poetry install
+
+      - name: Build Backend
+        working-directory: backend
+        run: |
+          poetry run nuitka \
+            --standalone \
+            --onefile \
+            --assume-yes-for-downloads \
+            --follow-imports \
+            --include-package=app \
+            --output-filename=vrindavan-dairy-backend \
+            run_backend.py
+
+      - name: Copy Backend
+        run: cp backend/vrindavan-dairy-backend frontend/backend/
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build Electron
+        working-directory: frontend
+        run: npm run dist
+
+      - name: Upload macOS Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS
+          path: frontend/release/*.dmg
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: pip install poetry nuitka
+
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: poetry install
+
+      - name: Build Backend
+        working-directory: backend
+        shell: pwsh
+        run: |
+          poetry run nuitka `
+            --standalone `
+            --onefile `
+            --assume-yes-for-downloads `
+            --follow-imports `
+            --include-package=app `
+            --output-filename=vrindavan-dairy-backend.exe `
+            run_backend.py
+
+      - name: Copy Backend
+        shell: pwsh
+        run: Copy-Item backend/vrindavan-dairy-backend.exe frontend/backend/
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build Electron
+        working-directory: frontend
+        run: npm run dist
+
+      - name: Upload Windows Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows
+          path: frontend/release/*.exe

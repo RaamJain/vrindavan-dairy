@@ -72,7 +72,7 @@ jobs:
 
       - name: Install Backend Dependencies
         working-directory: backend
-        run: poetry install
+        run: poetry install --no-root
 
       - name: Build Backend
         working-directory: backend

@@ -1,0 +1,88 @@
+# ==========================
+# macOS
+# ==========================
+.DS_Store
+
+# ==========================
+# Python
+# ==========================
+__pycache__/
+*.py[cod]
+*.so
+.python-version
+
+.venv/
+venv/
+env/
+
+# ==========================
+# Database
+# ==========================
+*.db
+*.sqlite
+*.sqlite3
+
+# ==========================
+# Application Data
+# ==========================
+storage/
+backups/
+
+# ==========================
+# Nuitka Build
+# ==========================
+run_backend.build/
+run_backend.dist/
+run_backend.onefile-build/
+
+vrindavan-dairy-backend
+vrindavan-dairy-backend.exe
+
+# Electron bundled backend
+frontend/backend/vrindavan-dairy-backend
+frontend/backend/vrindavan-dairy-backend.exe
+
+# ==========================
+# Node
+# ==========================
+node_modules/
+
+# ==========================
+# Frontend Build
+# ==========================
+dist/
+dist-ssr/
+release/
+out/
+
+# ==========================
+# Logs
+# ==========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================
+# Local
+# ==========================
+*.local
+
+# ==========================
+# Electron
+# ==========================
+electron-builder.env
+
+# ==========================
+# Editors
+# ==========================
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
